@@ -17,9 +17,11 @@
 /**
  * dukreminder block caps.
  *
- * @package   block_dukreminder
- * @copyright Florian Jungwirth <fjungwirth@gtn-solutions.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_dukreminder
+ * @copyright  gtn gmbh <office@gtn-solutions.com>
+ * @author	   Florian Jungwirth <fjungwirth@gtn-solutions.com>
+ * @ideaandconcept Gerhard Schwed <gerhard.schwed@donau-uni.ac.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

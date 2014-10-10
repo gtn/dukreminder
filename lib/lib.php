@@ -16,10 +16,12 @@
 
 /**
  * Collection of useful functions and constants
-*
-* @package   block_dukreminder
-* @copyright Florian Jungwirth <fjungwirth@gtn-solutions.com>
-* @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package    block_dukreminder
+ * @copyright  gtn gmbh <office@gtn-solutions.com>
+ * @author	   Florian Jungwirth <fjungwirth@gtn-solutions.com>
+ * @ideaandconcept Gerhard Schwed <gerhard.schwed@donau-uni.ac.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
 define('COMPLETION_STATUS_ALL', 0);
@@ -52,14 +54,14 @@ function block_dukreminder_init_js_css() {
  * if dateabsolute is set and it is not sent yet (sent = 0)
  * OR
  * if daterelative is set
- * 
+ *
  * @return array $entries
  */
 function block_dukreminder_get_pending_reminders() {
 	global $DB;
 	$entries = $DB->get_records('block_dukreminder', array('sent' => 0));
 	$now = time();
-	
+
 	$entries = $DB->get_records_select('block_dukreminder', "(sent = 0 AND dateabsolute > 0 AND dateabsolute < $now) OR (dateabsolute = 0 AND daterelative > 0)");
 	return $entries;
 }
@@ -69,24 +71,24 @@ function block_dukreminder_replace_placeholders($text, $coursename, $username, $
 	$text = str_replace(PLACEHOLDER_COURSENAME, $coursename, $text);
 	$text = str_replace(PLACEHOLDER_USERMAIL, $usermail, $text);
 	$text = str_replace(PLACEHOLDER_USERNAME, $username, $text);
-	
+
 	return $text;
 }
 
 /**
  * This function filters the users to recieve a reminder according to the
  * criterias recorded in the database.
- * The criterias are: 
+ * The criterias are:
  *  - deadline: amount of sec after course enrolment
  *  - groups: user groups specified in the course
  *  - completion status: if users have already completed/not completed the course
- *  
+ *
  * @param stdClass $entry database entry of block_dukreminder table
  * @return array $users users to recieve a reminder
  */
 function block_dukreminder_filter_users($entry) {
 	global $DB;
-	
+
 	//all potential users
 	$users = get_role_users(5, context_course::instance($entry->courseid));
 
@@ -94,14 +96,14 @@ function block_dukreminder_filter_users($entry) {
 	if($entry->daterelative > 0) {
 		//if reminder has relative date: check if user has already got an email
 		$mailsSent = $DB->get_records('block_dukreminder_mailssent',array('reminderid' => $entry->id),'','userid');
-		
+
 		$enabled_enrol_plugins = implode(',', $DB->get_fieldset_select('enrol','id',"courseid = $entry->courseid"));
 		//check user enrolment dates
 		foreach($users as $user) {
 			//if user has already got an email -> unset
 			if(array_key_exists($user->id, $mailsSent))
 				unset($users[$user->id]);
-			
+				
 			$enrolment_time = $DB->get_field_select('user_enrolments','timestart',"userid = $user->id AND enrolid IN ($enabled_enrol_plugins)");
 			//if user is longer enroled than the deadline is long -> unset
 			if($enrolment_time + $entry->daterelative > time()) {
@@ -109,7 +111,7 @@ function block_dukreminder_filter_users($entry) {
 			}
 		}
 	}
-	
+
 	//filter users by groups
 	$group_ids = explode(';',$entry->to_groups);
 	if($entry->to_groups) {
@@ -125,7 +127,7 @@ function block_dukreminder_filter_users($entry) {
 			}
 		}
 	}
-	
+
 	//filter users by completion status
 	if($entry->to_status != COMPLETION_STATUS_ALL) {
 		foreach ($users as $user) {
@@ -139,7 +141,7 @@ function block_dukreminder_filter_users($entry) {
 			}
 		}
 	}
-	
+
 	return $users;
 }
 
@@ -151,11 +153,11 @@ function block_dukreminder_get_manager($user) {
 		// Suche userid des Vorgesetzten in mdl_user
 		$select = "idnumber LIKE '$manager'";
 		$manager_id = $DB->get_field_select('user', 'id', $select);
-	
+
 		#// Hole Details des Vorgesetzten aus mdl_user
 		return $DB->get_record('user',array('id' => $manager_id));
 		/*
-		$managers[$manager_id]->username = $DB->get_field_select('user', 'username', $select);
+		 $managers[$manager_id]->username = $DB->get_field_select('user', 'username', $select);
 		$managers[$manager_id]->firstname = $DB->get_field_select('user', 'firstname', $select);
 		$managers[$manager_id]->lastname = $DB->get_field_select('user', 'lastname', $select);
 		$managers[$manager_id]->email = $DB->get_field_select('user', 'email', $select);
@@ -171,7 +173,7 @@ function block_dukreminder_get_mail_text($course, $users) {
 	$mail_text = get_string('email_teacher_notification','block_dukreminder',$textParams);
 	foreach($users as $user)
 		$mail_text .=  "\n" . fullname($user);
-	
+
 	return $mail_text;
 }
 

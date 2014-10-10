@@ -16,10 +16,12 @@
 
 /**
  * Collection of useful functions and constants
-*
-* @package   block_dukreminder
-* @copyright Florian Jungwirth <fjungwirth@gtn-solutions.com>
-* @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package    block_dukreminder
+ * @copyright  gtn gmbh <office@gtn-solutions.com>
+ * @author	   Florian Jungwirth <fjungwirth@gtn-solutions.com>
+ * @ideaandconcept Gerhard Schwed <gerhard.schwed@donau-uni.ac.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
 require_once dirname(__FILE__)."/inc.php";
@@ -80,7 +82,7 @@ if ($mform->is_cancelled()) {
 			$fromform->dateabsolute = 0;
 		if(isset($fromform->to_groups))
 			$fromform->to_groups = implode(";",$fromform->to_groups);
-		
+
 		$DB->insert_record('block_dukreminder', $fromform);
 	} else {
 		$fromform->timemodified = time();
@@ -95,7 +97,7 @@ if ($mform->is_cancelled()) {
 	// build tab navigation & print header
 	echo $OUTPUT->header();
 	echo $OUTPUT->tabtree(block_dukreminder_build_navigation_tabs($courseid), $page_identifier);
-	
+
 	// this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
 	// or on the first display of the form.
 
