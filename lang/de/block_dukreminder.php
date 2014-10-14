@@ -34,7 +34,8 @@ $string['tab_new_reminder'] = 'Neue Erinnerung';
 
 $string['form_title'] = 'Kürzel';
 $string['form_subject'] = 'Erinnerungs-Titel';
-$string['form_text'] = 'Text';
+$string['form_text'] = 'Benachrichtigungstext Schüler';
+$string['form_text_teacher'] = 'Benachrichtigungstext Trainer';
 $string['form_dateabsolute'] = 'Deadline';
 $string['form_daterelative'] = 'Dauer bezogen auf Kurseinschreibung';
 $string['form_to_status'] = 'Kursabschlusstatus';

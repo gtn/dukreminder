@@ -31,6 +31,8 @@ define('COMPLETION_STATUS_NOTCOMPLETED',2);
 define('PLACEHOLDER_COURSENAME', '###coursename###');
 define('PLACEHOLDER_USERNAME', '###username###');
 define('PLACEHOLDER_USERMAIL', '###usermail###');
+define('PLACEHOLDER_USERCOUNT', '###usercount###');
+define('PLACEHOLDER_USERS', '###users###');
 
 // SHOULD BE CHANGED
 define('EMAIL_DUMMY',2);
@@ -66,12 +68,14 @@ function block_dukreminder_get_pending_reminders() {
 	return $entries;
 }
 
-function block_dukreminder_replace_placeholders($text, $coursename, $username, $usermail) {
+function block_dukreminder_replace_placeholders($text, $coursename = '', $username = '', $usermail = '', $users = '', $usercount = '') {
 
 	$text = str_replace(PLACEHOLDER_COURSENAME, $coursename, $text);
 	$text = str_replace(PLACEHOLDER_USERMAIL, $usermail, $text);
 	$text = str_replace(PLACEHOLDER_USERNAME, $username, $text);
-
+	$text = str_replace(PLACEHOLDER_USERCOUNT, $usercount, $text);
+	$text = str_replace(PLACEHOLDER_USERS, $users, $text);
+	
 	return $text;
 }
 
@@ -166,14 +170,26 @@ function block_dukreminder_get_manager($user) {
 	return false;
 }
 
-function block_dukreminder_get_mail_text($course, $users) {
-	$textParams = new stdClass();
-	$textParams->amount = count($users);
-	$textParams->course = $course;
-	$mail_text = get_string('email_teacher_notification','block_dukreminder',$textParams);
+function block_dukreminder_get_mail_text($course, $users, $text_teacher = null) {
+	
+	$user_listing = '';
 	foreach($users as $user)
-		$mail_text .=  "\n" . fullname($user);
-
+		$user_listing .=  "\n" . fullname($user);
+	
+	//if text_teacher is not set, use lang string (for old reminders)
+	if(!$text_teacher) {
+		$textParams = new stdClass();
+		$textParams->amount = count($users);
+		$textParams->course = $course;
+		
+		$mail_text = get_string('email_teacher_notification','block_dukreminder',$textParams);
+		$mail_text .= $user_listing;
+	} else {
+		//if text_teacher is set, use it and replace placeholders
+		$mail_text = block_dukreminder_replace_placeholders($text_teacher,$course,'','',$user_listing,count($users));
+		$mail_text = strip_tags($mail_text);
+	}
+	
 	return $mail_text;
 }
 

@@ -25,4 +25,18 @@ function xmldb_block_dukreminder_upgrade($oldversion) {
         // Dukreminder savepoint reached.
         upgrade_block_savepoint(true, 2014082100, 'dukreminder');
     }
+    if ($oldversion < 2014101400) {
+
+        // Define field text_teacher to be added to block_dukreminder.
+        $table = new xmldb_table('block_dukreminder');
+        $field = new xmldb_field('text_teacher', XMLDB_TYPE_TEXT, null, null, null, null, null, 'sent');
+
+        // Conditionally launch add field text_teacher.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Dukreminder savepoint reached.
+        upgrade_block_savepoint(true, 2014101400, 'dukreminder');
+    }
 }

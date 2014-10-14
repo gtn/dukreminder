@@ -75,6 +75,23 @@ class reminder_form extends moodleform {
 		    'noclean'=>0)); // Add elements to your form
 		$mform->addRule('text', null, 'required', null, 'client');
 		
+		$placeholder = '<a href="#" onclick="insertTextAtCursor(\'###coursename###\');return false;">Kursname</a> ';
+		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###users###\');return false;">Liste der benachrichtigten User</a> ';
+		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###usercount###\');return false;">Anzahl der benachrichtigten User</a>';
+		
+		$mform->addElement('html', html_writer::div(
+				html_writer::div(html_writer::tag('label', 'Platzhalter'),'fitemtitle') . html_writer::div($placeholder,'felement ftext'),'fitem'));
+		
+		// TEXT
+		$mform->addElement('editor', 'text_teacher', get_string('form_text_teacher','block_dukreminder'),array(
+				'subdirs'=>0,
+				'maxbytes'=>0,
+				'maxfiles'=>0,
+				'changeformat'=>0,
+				'context'=>null,
+				'noclean'=>0)); // Add elements to your form
+		$mform->addRule('text_teacher', null, 'required', null, 'client');
+		
 		// DATEABSOLUT
 		$mform->addElement('date_selector', 'dateabsolute', get_string('form_dateabsolute','block_dukreminder')); // Add elements to your form
 		$mform->disabledIf('dateabsolute', 'daterelative[number]', 'neq', 0);

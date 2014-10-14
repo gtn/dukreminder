@@ -62,6 +62,7 @@ require_once('lib/reminder_form.php');
 if($reminderid > 0) {
 	$toform = $DB->get_record('block_dukreminder', array('id' => $reminderid));
 	$toform->text = array("text" => $toform->text, "format" => 1);
+	$toform->text_teacher = array("text" => $toform->text_teacher, "format" => 1);
 	$toform->disable = ($toform->dateabsolute > 0 && $toform->dateabsolute < time()) ? 1 : 0;
 }
 //Instantiate form
@@ -78,6 +79,7 @@ if ($mform->is_cancelled()) {
 		$fromform->timecreated = time();
 		$fromform->createdby = $USER->id;
 		$fromform->text = $fromform->text['text'];
+		$fromform->text_teacher = $fromform->text_teacher['text'];
 		if($fromform->daterelative > 0)
 			$fromform->dateabsolute = 0;
 		if(isset($fromform->to_groups))
@@ -88,6 +90,7 @@ if ($mform->is_cancelled()) {
 		$fromform->timemodified = time();
 		$fromform->modifiedby = $USER->id;
 		$fromform->text = $fromform->text['text'];
+		$fromform->text_teacher = $fromform->text_teacher['text'];
 		if($fromform->daterelative > 0)
 			$fromform->dateabsolute = 0;
 		$DB->update_record('block_dukreminder', $fromform);

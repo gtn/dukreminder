@@ -112,7 +112,7 @@ class block_dukreminder extends block_list {
 				}
 			}
 
-			$mailText = block_dukreminder_get_mail_text($course->fullname, $users);
+			$mailText = block_dukreminder_get_mail_text($course->fullname, $users, $entry->text_teacher);
 
 			if($entry->to_reporttrainer && $mailssent > 0) {
 				//get course teachers and send mails, and additional mails
