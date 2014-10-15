@@ -64,7 +64,9 @@ function block_dukreminder_get_pending_reminders() {
 	$entries = $DB->get_records('block_dukreminder', array('sent' => 0));
 	$now = time();
 
-	$entries = $DB->get_records_select('block_dukreminder', "(sent = 0 AND dateabsolute > 0 AND dateabsolute < $now) OR (dateabsolute = 0 AND daterelative > 0)");
+	$entries = $DB->get_records_select('block_dukreminder', "(sent = 0 AND dateabsolute > 0 AND dateabsolute < $now) OR (dateabsolute = 0 AND daterelative > 0)
+			OR (dateabsolute = 0 AND daterelative_completion > 0)");
+	
 	return $entries;
 }
 
@@ -116,6 +118,25 @@ function block_dukreminder_filter_users($entry) {
 		}
 	}
 
+	//filter users by deadline
+	if($entry->daterelative_completion > 0) {
+		//if reminder has relative date: check if user has already got an email
+		$mailsSent = $DB->get_records('block_dukreminder_mailssent',array('reminderid' => $entry->id),'','userid');
+	
+		//check user completion dates
+		foreach($users as $user) {
+			//if user has already got an email -> unset
+			if(array_key_exists($user->id, $mailsSent))
+				unset($users[$user->id]);
+	
+			$completion_time = $DB->get_field('course_completions', 'timecompleted', array('userid'=>$user->id,'course'=>$entry->courseid));
+			//if user completion is not long enough ago -> unset
+			if(!isset($completion_time) || ($completion_time + $entry->daterelative_completion > time())) {
+				unset($users[$user->id]);
+			}
+		}
+	}
+	
 	//filter users by groups
 	$group_ids = explode(';',$entry->to_groups);
 	if($entry->to_groups) {
@@ -132,8 +153,8 @@ function block_dukreminder_filter_users($entry) {
 		}
 	}
 
-	//filter users by completion status
-	if($entry->to_status != COMPLETION_STATUS_ALL) {
+	//filter users by completion status (if not daterelativ_completion is set)
+	if($entry->to_status != COMPLETION_STATUS_ALL && $entry->daterelative_completion == 0) {
 		foreach ($users as $user) {
 			$select = "course = $entry->courseid AND userid = $user->id";
 			$timecompleted = $DB->get_field_select('course_completions', 'timecompleted', $select);

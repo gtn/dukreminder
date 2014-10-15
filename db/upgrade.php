@@ -39,4 +39,18 @@ function xmldb_block_dukreminder_upgrade($oldversion) {
         // Dukreminder savepoint reached.
         upgrade_block_savepoint(true, 2014101400, 'dukreminder');
     }
+    if ($oldversion < 2014101401) {
+    
+    	// Define field daterelative_completion to be added to block_dukreminder.
+    	$table = new xmldb_table('block_dukreminder');
+    	$field = new xmldb_field('daterelative_completion', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'text_teacher');
+    
+    	// Conditionally launch add field daterelative_completion.
+    	if (!$dbman->field_exists($table, $field)) {
+    		$dbman->add_field($table, $field);
+    	}
+    
+    	// Dukreminder savepoint reached.
+    	upgrade_block_savepoint(true, 2014101401, 'dukreminder');
+    }
 }

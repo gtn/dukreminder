@@ -95,10 +95,18 @@ class reminder_form extends moodleform {
 		// DATEABSOLUT
 		$mform->addElement('date_selector', 'dateabsolute', get_string('form_dateabsolute','block_dukreminder')); // Add elements to your form
 		$mform->disabledIf('dateabsolute', 'daterelative[number]', 'neq', 0);
+		$mform->disabledIf('dateabsolute', 'daterelative_completion[number]', 'neq', 0);
 		
 		// DATERELATIVE
 		$mform->addElement('duration', 'daterelative', get_string('form_daterelative','block_dukreminder')); // Add elements to your form
 		$mform->setDefault('daterelative', 0);
+		$mform->disabledIf('daterelative', 'daterelative_completion[number]', 'neq', 0);
+		
+		// DATERELATIVE_COMPLETION
+		$mform->addElement('duration', 'daterelative_completion', get_string('form_daterelative_completion','block_dukreminder')); // Add elements to your form
+		$mform->setDefault('daterelative_completion', 0);
+		$mform->disabledIf('daterelative_completion', 'daterelative[number]', 'neq', 0);
+		
 		
 		// TO_STATUS
 		$data = array(0 => get_string('form_to_status_all','block_dukreminder'), 1 => get_string('form_to_status_completed','block_dukreminder'), 2 => get_string('form_to_status_notcompleted','block_dukreminder'));

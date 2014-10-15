@@ -38,6 +38,7 @@ $string['form_text'] = 'Benachrichtigungstext Schüler';
 $string['form_text_teacher'] = 'Benachrichtigungstext Trainer';
 $string['form_dateabsolute'] = 'Deadline';
 $string['form_daterelative'] = 'Dauer bezogen auf Kurseinschreibung';
+$string['form_daterelative_completion'] = 'Dauer bezogen ab Kursabschluss';
 $string['form_to_status'] = 'Kursabschlusstatus';
 $string['form_to_reporttrainer'] = 'Bericht an die Kurstrainer';
 $string['form_to_reportsuperior'] = 'Bericht an die Vorgesetzten';

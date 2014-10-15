@@ -88,7 +88,7 @@ class block_dukreminder extends block_list {
 				email_to_user($user, $creator, $entry->subject, strip_tags($mailText), $mailText);
 				$mailssent++;
 				
-				if($entry->daterelative > 0)
+				if($entry->daterelative > 0 || $entry->daterelative_completion > 0)
 					$DB->insert_record('block_dukreminder_mailssent', array('userid' => $user->id, 'reminderid' => $entry->id));
 				/*
 				$event = \block_dukreminder\event\send_mail::create(array(

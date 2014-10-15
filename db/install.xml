@@ -25,6 +25,7 @@
         <FIELD NAME="to_mail" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="sent" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0 = not yet sent, 1 = already sent"/>
         <FIELD NAME="text_teacher" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="text that will be sent to teachers"/>
+        <FIELD NAME="daterelative_completion" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="date for sending reminders, relative to course completion date"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
