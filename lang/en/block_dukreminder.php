@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'block_dukreminder', language 'en'
+ * Strings for component 'block_dukreminder', language 'de'
  *
  * @package    block_dukreminder
  * @copyright  gtn gmbh <office@gtn-solutions.com>
@@ -32,26 +32,31 @@ $string['pluginname'] = 'Kursabschlusserinnerung';
 $string['tab_course_reminders'] = 'Kurs-Erinnerungen';
 $string['tab_new_reminder'] = 'Neue Erinnerung';
 
-$string['form_title'] = 'Kürzel';
-$string['form_subject'] = 'Erinnerungs-Titel';
-$string['form_text'] = 'Benachrichtigungstext Schüler';
-$string['form_text_teacher'] = 'Benachrichtigungstext Trainer';
-$string['form_dateabsolute'] = 'Deadline';
-$string['form_daterelative'] = 'Dauer bezogen auf Kurseinschreibung';
-$string['form_daterelative_completion'] = 'Dauer bezogen ab Kursabschluss';
+$string['form_title'] = 'interne Bezeichnung';
+$string['form_subject'] = 'Email Betreff';
+$string['form_text'] = 'Emailtext Teilnehmer';
+$string['form_text_teacher'] = 'Emailtext Trainer';
+$string['form_dateabsolute'] = 'absolutes Versanddatum';
+$string['form_daterelative'] = 'relative Versandzeit';
+$string['form_daterelative_completion'] = 'Versand [Zeit] nach letztem Kursabschluss';
 $string['form_to_status'] = 'Kursabschlusstatus';
 $string['form_to_reporttrainer'] = 'Bericht an die Kurstrainer';
-$string['form_to_reportsuperior'] = 'Bericht an die Vorgesetzten';
+$string['form_to_reportsuperior'] = 'Bericht an die Vorgesetzte';
 $string['form_to_groups'] = 'Empfängergruppen';
-$string['form_to_mail'] = 'Sonstige Email-Empfänger';
+$string['form_to_mail'] = 'Bericht an sonstige Email Empfänger';
 $string['form_mailssent'] = 'Bisher versandte Erinnerungen';
 $string['form_delete'] = 'Wirklich löschen?';
+$string['form_criteria'] = 'Benachrichtigungskriterium';
 
 $string['form_to_status_all'] = 'Alle';
 $string['form_to_status_completed'] = 'Mit Abschluss';
 $string['form_to_status_notcompleted'] = 'Ohne Abschluss';
 
 $string['daterelative_error'] = 'Es ist kein negativer Wert hier erlaubt';
+$string['criteria_error'] = 'Eine Kombination aus absolutem Datum und dem Kriterium Kurseinschreibung kann nicht verwendet werden';
 $string['to_mail_error'] = 'Es ist eine ungültige E-Mail-Adresse angegeben worden! Die Adressen müssen mit ; getrennt werden';
 
-$string['email_teacher_notification'] = 'Soeben wurden folgende {$a->amount} Personen an den Kursabschluss im Kurs {$a->course} erinnert:';
+$string['email_teacher_notification'] = 'Soeben wurden folgende {$a->amount} Personen im Kurs {$a->course} erinnert:';
+
+$string['criteria_completion'] = 'Kursabschluss';
+$string['criteria_enrolment'] = 'Kurseinschreibung';

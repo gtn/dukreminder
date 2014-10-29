@@ -34,6 +34,9 @@ define('PLACEHOLDER_USERMAIL', '###usermail###');
 define('PLACEHOLDER_USERCOUNT', '###usercount###');
 define('PLACEHOLDER_USERS', '###users###');
 
+define('CRITERIA_COMPLETION', 250000);
+define('CRITERIA_ENROLMENT', 250001);
+
 // SHOULD BE CHANGED
 define('EMAIL_DUMMY',2);
 
@@ -64,8 +67,7 @@ function block_dukreminder_get_pending_reminders() {
 	$entries = $DB->get_records('block_dukreminder', array('sent' => 0));
 	$now = time();
 
-	$entries = $DB->get_records_select('block_dukreminder', "(sent = 0 AND dateabsolute > 0 AND dateabsolute < $now) OR (dateabsolute = 0 AND daterelative > 0)
-			OR (dateabsolute = 0 AND daterelative_completion > 0)");
+	$entries = $DB->get_records_select('block_dukreminder', "(sent = 0 AND dateabsolute > 0 AND dateabsolute < $now) OR (dateabsolute = 0 AND daterelative > 0)");
 	
 	return $entries;
 }
@@ -98,8 +100,36 @@ function block_dukreminder_filter_users($entry) {
 	//all potential users
 	$users = get_role_users(5, context_course::instance($entry->courseid));
 
+	if($entry->dateabsolute) {
+		// course completion
+		if($entry->criteria == CRITERIA_COMPLETION) {
+			foreach ($users as $user) {
+				$select = "course = $entry->courseid AND userid = $user->id";
+				$timecompleted = $DB->get_field_select('course_completions', 'timecompleted', $select);
+				//if user has completed and status is "not completed" -> unset
+				if (($timecompleted)) {
+					$timecompleted = date("d.m.Y", $timecompleted);
+					unset($users[$user->id]);
+				}
+			}
+		}		
+		// criteria (activity) completion
+		else {
+			$course = $DB->get_record('course',array('id' => $entry->courseid));
+			$completion = new completion_info($course);
+			$criteria = completion_criteria::factory((array)$DB->get_record('course_completion_criteria',array('id'=>$entry->criteria)));
+			
+			foreach ($users as $user) {
+				$user_completed = $completion->get_user_completion($user->id, $criteria);
+				if($user_completed->is_complete()) {
+					unset($users[$user->id]);
+				}
+			}
+		}
+	}
+	
 	//filter users by deadline
-	if($entry->daterelative > 0) {
+	if($entry->daterelative > 0 && $entry->criteria == CRITERIA_ENROLMENT) {
 		//if reminder has relative date: check if user has already got an email
 		$mailsSent = $DB->get_records('block_dukreminder_mailssent',array('reminderid' => $entry->id),'','userid');
 
@@ -119,7 +149,7 @@ function block_dukreminder_filter_users($entry) {
 	}
 
 	//filter users by deadline
-	if($entry->daterelative_completion > 0) {
+	if($entry->daterelative > 0 && $entry->criteria == CRITERIA_COMPLETION) {
 		//if reminder has relative date: check if user has already got an email
 		$mailsSent = $DB->get_records('block_dukreminder_mailssent',array('reminderid' => $entry->id),'','userid');
 	
@@ -131,7 +161,31 @@ function block_dukreminder_filter_users($entry) {
 	
 			$completion_time = $DB->get_field('course_completions', 'timecompleted', array('userid'=>$user->id,'course'=>$entry->courseid));
 			//if user completion is not long enough ago -> unset
-			if(!isset($completion_time) || ($completion_time + $entry->daterelative_completion > time())) {
+			if(!isset($completion_time) || ($completion_time + $entry->daterelative > time())) {
+				unset($users[$user->id]);
+			}
+		}
+	}
+	
+	//filter users by deadline
+	if($entry->daterelative > 0 && $entry->criteria != CRITERIA_COMPLETION && $entry->criteria != CRITERIA_ENROLMENT) {
+		//if reminder has relative date: check if user has already got an email
+		$mailsSent = $DB->get_records('block_dukreminder_mailssent',array('reminderid' => $entry->id),'','userid');
+	
+		$course = $DB->get_record('course',array('id' => $entry->courseid));
+		$completion = new completion_info($course);
+		$criteria = completion_criteria::factory((array)$DB->get_record('course_completion_criteria',array('id'=>$entry->criteria)));
+			
+		//check user completion dates
+		foreach($users as $user) {
+			//if user has already got an email -> unset
+			if(array_key_exists($user->id, $mailsSent))
+				unset($users[$user->id]);
+	
+			$user_completed = $completion->get_user_completion($user->id, $criteria);
+			$user_completed->timecompleted;
+			//if user criteria completion is not long enough ago -> unset
+			if(!isset($user_completed->timecompleted) || ($user_completed->timecompleted + $entry->daterelative > time())) {
 				unset($users[$user->id]);
 			}
 		}
@@ -153,7 +207,7 @@ function block_dukreminder_filter_users($entry) {
 		}
 	}
 
-	//filter users by completion status (if not daterelativ_completion is set)
+	/*filter users by completion status (if not daterelativ_completion is set)
 	if($entry->to_status != COMPLETION_STATUS_ALL && $entry->daterelative_completion == 0) {
 		foreach ($users as $user) {
 			$select = "course = $entry->courseid AND userid = $user->id";
@@ -165,7 +219,7 @@ function block_dukreminder_filter_users($entry) {
 				unset($users[$user->id]);
 			}
 		}
-	}
+	}*/
 
 	return $users;
 }
@@ -216,4 +270,18 @@ function block_dukreminder_get_mail_text($course, $users, $text_teacher = null) 
 
 function block_dukreminder_get_course_teachers($coursecontext) {
 	return array_merge(get_role_users(4, $coursecontext),get_role_users(3, $coursecontext),get_role_users(2, $coursecontext),get_role_users(1, $coursecontext));
+}
+
+function block_dukreminder_get_criteria($entry) {
+	global $DB;
+	
+	if($entry == CRITERIA_COMPLETION)
+		return get_string('criteria_completion','block_dukreminder');
+	if($entry == CRITERIA_ENROLMENT)
+		return get_string('criteria_enrolment','block_dukreminder');
+	
+	$completion_criteria_entry = $DB->get_record('course_completion_criteria',array('id'=>$entry));
+	$mod = get_coursemodule_from_id($completion_criteria_entry->module, $completion_criteria_entry->moduleinstance);
+
+	return $mod->name;
 }

@@ -70,14 +70,16 @@ $table = new html_table();
 $table->head = array(html_writer::link($PAGE->url . "&sorting=title", get_string('form_title','block_dukreminder')),
 		html_writer::link($PAGE->url . "&sorting=subject", get_string('form_subject','block_dukreminder')),
 		html_writer::link($PAGE->url . "&sorting=dateabsolute&type=desc", get_string('form_dateabsolute','block_dukreminder')),
-		html_writer::link($PAGE->url . "&sorting=to_status&type=desc", get_string('form_to_status','block_dukreminder')),
+	//	html_writer::link($PAGE->url . "&sorting=to_status&type=desc", get_string('form_to_status','block_dukreminder')),
+		html_writer::link($PAGE->url . "&sorting=criteria&type=desc", get_string('form_criteria','block_dukreminder')),
 		html_writer::link($PAGE->url . "&sorting=mailssent&type=desc", get_string('form_mailssent','block_dukreminder')),
 		'');
 
-$data = $DB->get_records('block_dukreminder',array('courseid' => $courseid),$sorting . ' ' . $sorttype,'id, title, subject, dateabsolute, to_status, mailssent');
+$data = $DB->get_records('block_dukreminder',array('courseid' => $courseid),$sorting . ' ' . $sorttype,'id, title, subject, dateabsolute, criteria, mailssent');
 foreach($data as $record) {
 	$record->dateabsolute = ($record->dateabsolute > 0) ? date('d.m.Y',$record->dateabsolute) : '-';
-	$record->to_status = $status[$record->to_status];
+	//$record->to_status = $status[$record->to_status];
+	$record->criteria = block_dukreminder_get_criteria($record->criteria);
 	$record->actions = 
 		html_writer::link(
 			new moodle_url('/blocks/dukreminder/new_reminder.php', array('courseid'=>$COURSE->id,'reminderid'=>$record->id)),

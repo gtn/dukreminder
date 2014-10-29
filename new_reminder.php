@@ -80,13 +80,11 @@ if ($mform->is_cancelled()) {
 		$fromform->createdby = $USER->id;
 		$fromform->text = $fromform->text['text'];
 		$fromform->text_teacher = $fromform->text_teacher['text'];
+		$fromform->to_status = 0;
+		
 		if($fromform->daterelative > 0) {
 			$fromform->dateabsolute = 0;
-			$fromform->daterelative_completion = 0;
-		} elseif($fromform->daterelative_completion > 0) {
-			$fromform->dateabsolute = 0;
-			$fromform->daterelative = 0;
-		}
+		} 
 		if(isset($fromform->to_groups))
 			$fromform->to_groups = implode(";",$fromform->to_groups);
 
@@ -98,11 +96,7 @@ if ($mform->is_cancelled()) {
 		$fromform->text_teacher = $fromform->text_teacher['text'];
 		if($fromform->daterelative > 0) {
 			$fromform->dateabsolute = 0;
-			$fromform->daterelative_completion = 0;
-		} elseif($fromform->daterelative_completion > 0) {
-			$fromform->dateabsolute = 0;
-			$fromform->daterelative = 0;
-		}
+		} 
 		$DB->update_record('block_dukreminder', $fromform);
 	}
 	redirect(new moodle_url("/blocks/dukreminder/course_reminders.php",array("courseid"=>$courseid)));

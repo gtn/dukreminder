@@ -53,4 +53,37 @@ function xmldb_block_dukreminder_upgrade($oldversion) {
     	// Dukreminder savepoint reached.
     	upgrade_block_savepoint(true, 2014101401, 'dukreminder');
     }
+    
+    if ($oldversion < 2014102800) {
+    
+    	$old_completion_entries = $DB->get_records_select('block_dukreminder','daterelative_completion > 0');
+    	
+    	$old_enrol_entries = $DB->get_records_select('block_dukreminder','daterelative_completion = 0 OR daterelative_completion is NULL');
+    	
+    	// Rename field criteria on table block_dukreminder to NEWNAMEGOESHERE.
+    	$table = new xmldb_table('block_dukreminder');
+    	$field = new xmldb_field('daterelative_completion', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'text_teacher');
+    
+    	// Launch rename field criteria.
+    	$dbman->rename_field($table, $field, 'criteria');
+    
+    	$field = new xmldb_field('criteria', XMLDB_TYPE_INTEGER, '10', null, null, null, '250001', 'text_teacher');
+    	
+    	// Launch change of default for field criteria.
+    	$dbman->change_field_default($table, $field);
+    	
+    	foreach($old_completion_entries as $old) {
+    		$old->criteria = 250000;
+    		$old->daterelative = $old->daterelative_completion;
+    		$DB->update_record('block_dukreminder', $old);
+    	}
+    	
+    	foreach($old_enrol_entries as $old) {
+    		$old->criteria = 250001;
+    		$DB->update_record('block_dukreminder', $old);
+    	}
+    	
+    	// Dukreminder savepoint reached.
+    	upgrade_block_savepoint(true, 2014102800, 'dukreminder');
+    }
 }

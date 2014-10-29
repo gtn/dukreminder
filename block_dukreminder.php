@@ -88,16 +88,16 @@ class block_dukreminder extends block_list {
 				email_to_user($user, $creator, $entry->subject, strip_tags($mailText), $mailText);
 				$mailssent++;
 				
-				if($entry->daterelative > 0 || $entry->daterelative_completion > 0)
+				if($entry->daterelative > 0)
 					$DB->insert_record('block_dukreminder_mailssent', array('userid' => $user->id, 'reminderid' => $entry->id));
-				/*
+				
 				$event = \block_dukreminder\event\send_mail::create(array(
 						'objectid' => $creator->id,
 						'context' => $coursecontext,
 						'other' => 'student was notified',
 						'relateduserid' => $user->id
 				));
-				$event->trigger();*/
+				$event->trigger();
 				mtrace("a reminder mail was sent to student $user->id for $entry->subject");
 
 				//check for user manager and save information for later notifications
@@ -118,16 +118,15 @@ class block_dukreminder extends block_list {
 				//get course teachers and send mails, and additional mails
 				$teachers = block_dukreminder_get_course_teachers($coursecontext);
 				foreach($teachers as $teacher) {
-					email_to_user($teacher, $creator, get_string('pluginname','block_dukreminder'), $mailText);
-
-					/*
+					email_to_user($teacher, $creator, $entry->subject, $mailText); // changed by G. Schwed (DUK)
+					
 					$event = \block_dukreminder\event\send_mail::create(array(
 							'objectid' => $creator->id,
 							'context' => $coursecontext,
 							'other' => 'teacher was notified',
 							'relateduserid' => $teacher->id
 					));
-					$event->trigger();*/
+					$event->trigger();
 					mtrace("a report mail was sent to teacher $teacher->id");
 				}
 			}
@@ -138,16 +137,15 @@ class block_dukreminder extends block_list {
 
 				foreach($addresses as $address) {
 					$dummyuser->email = $address;
-					email_to_user($dummyuser, $creator, get_string('pluginname','block_dukreminder'), $mailText);
-
-					/*
+					email_to_user($teacher, $creator, $entry->subject, $mailText); // changed by G. Schwed (DUK)
+					
 					$event = \block_dukreminder\event\send_mail::create(array(
 							'objectid' => $creator->id,
 							'context' => $coursecontext,
 							'other' => 'additional user was notified',
 							'relateduserid' => $dummyuser->id
 					));
-					$event->trigger();*/
+					$event->trigger();
 					mtrace("a report mail was sent to $address");
 				}
 			}
@@ -158,14 +156,14 @@ class block_dukreminder extends block_list {
 					$mailText = block_dukreminder_get_mail_text($course->fullname, $manager->users);
 					email_to_user($manager, $creator, get_string('pluginname','block_dukreminder'), $mailText);
 
-					/*
+					
 					$event = \block_dukreminder\event\send_mail::create(array(
 							'objectid' => $creator->id,
 							'context' => $coursecontext,
 							'other' => 'manager was notified',
 							'relateduserid' => $manager->id
 					));
-					$event->trigger();*/
+					$event->trigger();
 					mtrace("a report mail was sent to manager $manager->id");
 				}
 			}
