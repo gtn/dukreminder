@@ -35,6 +35,9 @@ class block_dukreminder extends block_list {
 	function get_content() {
 		global $CFG, $OUTPUT, $COURSE;
 
+		if(!has_capability('block/dukreminder:use', context_course::instance($COURSE->id)))
+			return '';
+		
 		if ($this->content !== null) {
 			return $this->content;
 		}
