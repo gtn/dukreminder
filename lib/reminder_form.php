@@ -64,6 +64,8 @@ class reminder_form extends moodleform {
 		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###usermail###\');return false;">Usermail</a> ';
 		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###coursename###\');return false;">Kursname</a>';
 		
+		$placeholder = '###username### ###usermail### ###coursename###';
+		
 		$mform->addElement('html', html_writer::div(
 				html_writer::div(html_writer::tag('label', 'Platzhalter'),'fitemtitle') . html_writer::div($placeholder,'felement ftext'),'fitem'));
 		
@@ -145,6 +147,7 @@ class reminder_form extends moodleform {
 		$placeholder = '<a href="#" onclick="insertTextAtCursor(\'###coursename###\');return false;">Kursname</a> ';
 		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###users###\');return false;">Liste der benachrichtigten User</a> ';
 		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###usercount###\');return false;">Anzahl der benachrichtigten User</a>';
+		$placeholder = '###coursename### ###users### ###usercount###';
 		
 		$mform->addElement('html', html_writer::div(
 				html_writer::div(html_writer::tag('label', 'Platzhalter'),'fitemtitle') . html_writer::div($placeholder,'felement ftext'),'fitem'));
