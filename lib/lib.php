@@ -36,6 +36,7 @@ define('PLACEHOLDER_USERS', '###users###');
 
 define('CRITERIA_COMPLETION', 250000);
 define('CRITERIA_ENROLMENT', 250001);
+define('CRITERIA_ALL', 250002);
 
 // SHOULD BE CHANGED
 define('EMAIL_DUMMY',2);
@@ -100,7 +101,7 @@ function block_dukreminder_filter_users($entry) {
 	//all potential users
 	$users = get_role_users(5, context_course::instance($entry->courseid));
 
-	if($entry->dateabsolute) {
+	if($entry->dateabsolute > 0) {
 		// course completion
 		if($entry->criteria == CRITERIA_COMPLETION) {
 			foreach ($users as $user) {
@@ -114,7 +115,7 @@ function block_dukreminder_filter_users($entry) {
 			}
 		}		
 		// criteria (activity) completion
-		else {
+		else if($entry->criteria != CRITERIA_ALL) {
 			$course = $DB->get_record('course',array('id' => $entry->courseid));
 			$completion = new completion_info($course);
 			$criteria = completion_criteria::factory((array)$DB->get_record('course_completion_criteria',array('id'=>$entry->criteria)));
@@ -279,6 +280,8 @@ function block_dukreminder_get_criteria($entry) {
 		return get_string('criteria_completion','block_dukreminder');
 	if($entry == CRITERIA_ENROLMENT)
 		return get_string('criteria_enrolment','block_dukreminder');
+	if($entry == CRITERIA_ALL)
+		return get_string('criteria_all','block_dukreminder');
 	
 	$completion_criteria_entry = $DB->get_record('course_completion_criteria',array('id'=>$entry));
 	$mod = get_coursemodule_from_id($completion_criteria_entry->module, $completion_criteria_entry->moduleinstance);

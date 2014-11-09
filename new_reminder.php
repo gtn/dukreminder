@@ -94,6 +94,8 @@ if ($mform->is_cancelled()) {
 		$fromform->modifiedby = $USER->id;
 		$fromform->text = $fromform->text['text'];
 		$fromform->text_teacher = $fromform->text_teacher['text'];
+		if(isset($fromform->to_groups))
+			$fromform->to_groups = implode(";",$fromform->to_groups);
 		if($fromform->daterelative > 0) {
 			$fromform->dateabsolute = 0;
 		} 

@@ -54,9 +54,11 @@ $string['form_to_status_notcompleted'] = 'Ohne Abschluss';
 
 $string['daterelative_error'] = 'Es ist kein negativer Wert hier erlaubt';
 $string['criteria_error'] = 'Eine Kombination aus absolutem Datum und dem Kriterium Kurseinschreibung kann nicht verwendet werden';
+$string['criteria_error2'] = 'Eine Kombination aus relativer Zeitspanne und dem Kriterium Alle kann nicht verwendet werden';
 $string['to_mail_error'] = 'Es ist eine ungültige E-Mail-Adresse angegeben worden! Die Adressen müssen mit ; getrennt werden';
 
 $string['email_teacher_notification'] = 'Soeben wurden folgende {$a->amount} Personen im Kurs {$a->course} erinnert:';
 
+$string['criteria_all'] = 'Alle';
 $string['criteria_completion'] = 'Kursabschluss';
 $string['criteria_enrolment'] = 'Kurseinschreibung';

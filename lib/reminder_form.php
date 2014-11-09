@@ -110,6 +110,7 @@ class reminder_form extends moodleform {
 		$completion = new completion_info($course);
 		
 		$criteria = array();
+		$criteria[CRITERIA_ALL] = get_string('criteria_all','block_dukreminder');
 		$criteria[CRITERIA_COMPLETION] = get_string('criteria_completion','block_dukreminder');
 		$criteria[CRITERIA_ENROLMENT] = get_string('criteria_enrolment','block_dukreminder');
 		
@@ -141,7 +142,7 @@ class reminder_form extends moodleform {
 		}
 		$select = $mform->addElement('select','to_groups', get_string('form_to_groups', 'block_dukreminder'),$groups);
 		$select->setMultiple(true);
-		
+
 		$mform->addElement('header', 'nameforyourheaderelement', "Berichtsoptionen");
 		
 		$placeholder = '<a href="#" onclick="insertTextAtCursor(\'###coursename###\');return false;">Kursname</a> ';
@@ -207,7 +208,10 @@ class reminder_form extends moodleform {
         
         if ($data['dateabsolute'] > 0 && $data['criteria'] == CRITERIA_ENROLMENT)
         	$errors['criteria'] = get_string('criteria_error','block_dukreminder');
-        	 
+
+        if ($data['daterelative'] > 0 && $data['criteria'] == CRITERIA_ALL)
+        	$errors['criteria'] = get_string('criteria_error2','block_dukreminder');
+        
         return $errors;
     }
 }
