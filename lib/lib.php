@@ -196,6 +196,23 @@ function block_dukreminder_filter_users($entry) {
 	$group_ids = explode(';',$entry->to_groups);
 	if($entry->to_groups) {
 		foreach($users as $user) {
+			//if user is  part in 1 or more group -> unset
+			$isMember = false;
+			foreach($group_ids as $group_id)
+				if(groups_is_member($group_id,$user->id))
+				$isMember = true;
+	
+			if($isMember) {
+				unset($users[$user->id]);
+			}
+		}
+	}
+	
+	/*
+	//filter users by groups
+	$group_ids = explode(';',$entry->to_groups);
+	if($entry->to_groups) {
+		foreach($users as $user) {
 			//if user is not part in at least 1 group -> unset
 			$isMember = false;
 			foreach($group_ids as $group_id)
@@ -206,7 +223,7 @@ function block_dukreminder_filter_users($entry) {
 				unset($users[$user->id]);
 			}
 		}
-	}
+	}*/
 
 	/*filter users by completion status (if not daterelativ_completion is set)
 	if($entry->to_status != COMPLETION_STATUS_ALL && $entry->daterelative_completion == 0) {
