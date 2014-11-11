@@ -187,7 +187,7 @@ class reminder_form extends moodleform {
 		$mform->disabledIf('to_mail', 'disable', 'neq', 0);
 		$mform->disabledIf('to_groups', 'disable', 'neq', 0);
 	}
-	//Custom validation should be added here
+
 	function validation($data, $files) {
 		$errors = parent::validation($data, $files);
 		
@@ -206,7 +206,7 @@ class reminder_form extends moodleform {
         	}
         }
         
-        if ($data['dateabsolute'] > 0 && $data['criteria'] == CRITERIA_ENROLMENT)
+        if ($data['daterelative'] == 0 && $data['criteria'] == CRITERIA_ENROLMENT)
         	$errors['criteria'] = get_string('criteria_error','block_dukreminder');
 
         if ($data['daterelative'] > 0 && $data['criteria'] == CRITERIA_ALL)
