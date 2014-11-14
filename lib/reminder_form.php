@@ -49,7 +49,7 @@ class reminder_form extends moodleform {
 		$mform->setType('id',PARAM_INT);
 		$mform->setDefault('id', 0);
 		
-		$mform->addElement('header', 'nameforyourheaderelement', "Allgemeines");
+		$mform->addElement('header', 'nameforyourheaderelement', get_string('form_header_general','block_dukreminder'));
 		
 		// TITLE
 		$mform->addElement('text', 'title', get_string('form_title','block_dukreminder'), array('size'=>'50')); // Add elements to your form
@@ -59,6 +59,7 @@ class reminder_form extends moodleform {
 		$mform->addElement('text', 'subject', get_string('form_subject','block_dukreminder')); // Add elements to your form
 		$mform->setType('subject', PARAM_NOTAGS);                   //Set type of element
 		$mform->addRule('subject', null, 'required', null, 'client');
+		$mform->addHelpButton('subject', 'form_subject', 'block_dukreminder');
 
 		$placeholder = '<a href="#" onclick="insertTextAtCursor(\'###username###\');return false;">Username</a> ';
 		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###usermail###\');return false;">Usermail</a> ';
@@ -78,18 +79,20 @@ class reminder_form extends moodleform {
 		    'context'=>null,
 		    'noclean'=>0)); // Add elements to your form
 		$mform->addRule('text', null, 'required', null, 'client');
+		$mform->addHelpButton('text', 'form_text', 'block_dukreminder');
 		
-		$mform->addElement('header', 'nameforyourheaderelement', "Auswahl Zeit");
+		$mform->addElement('header', 'nameforyourheaderelement', get_string('form_header_time','block_dukreminder'));
 		
 		// DATEABSOLUT
 		$mform->addElement('date_selector', 'dateabsolute', get_string('form_dateabsolute','block_dukreminder')); // Add elements to your form
 		$mform->disabledIf('dateabsolute', 'daterelative[number]', 'neq', 0);
-		
+		$mform->addHelpButton('dateabsolute', 'form_dateabsolute', 'block_dukreminder');
 		
 		// DATERELATIVE
 		$mform->addElement('duration', 'daterelative', get_string('form_daterelative','block_dukreminder')); // Add elements to your form
 		$mform->setDefault('daterelative', 0);
 		$mform->disabledIf('daterelative', 'daterelative_completion[number]', 'neq', 0);
+		$mform->addHelpButton('daterelative', 'form_daterelative', 'block_dukreminder');
 		
 		// DATERELATIVE_COMPLETION
 		/*
@@ -102,7 +105,7 @@ class reminder_form extends moodleform {
 		//$data = array(0 => get_string('form_to_status_all','block_dukreminder'), 1 => get_string('form_to_status_completed','block_dukreminder'), 2 => get_string('form_to_status_notcompleted','block_dukreminder'));
 		//$mform->addElement('hidden', 'to_status', get_string('form_to_status','block_dukreminder'),$data); // Add elements to your form
 		
-		$mform->addElement('header', 'nameforyourheaderelement', "Auswahl Kriterium");
+		$mform->addElement('header', 'nameforyourheaderelement', get_string('form_header_criteria','block_dukreminder'));
 		
 		// Get criteria for course
 		$courseid = required_param('courseid', PARAM_INT);
@@ -128,12 +131,12 @@ class reminder_form extends moodleform {
 					$criteria[$id] = $criterion->get_title_detailed();
 				}
 			}
-				
-			$mform->addElement('select','criteria',get_string('form_criteria','block_dukreminder'),$criteria);
-		
 		}
+
+		$mform->addElement('select','criteria',get_string('form_criteria','block_dukreminder'),$criteria);
+		$mform->addHelpButton('criteria', 'form_criteria', 'block_dukreminder');
 		
-		$mform->addElement('header', 'nameforyourheaderelement', "Gruppenfilter");
+		$mform->addElement('header', 'nameforyourheaderelement', get_string('form_header_groups','block_dukreminder'));
 		
 		// TO_GROUPS
 		$groups = array();
@@ -142,8 +145,8 @@ class reminder_form extends moodleform {
 		}
 		$select = $mform->addElement('select','to_groups', get_string('form_to_groups', 'block_dukreminder'),$groups);
 		$select->setMultiple(true);
-
-		$mform->addElement('header', 'nameforyourheaderelement', "Berichtsoptionen");
+		
+		$mform->addElement('header', 'nameforyourheaderelement', get_string('form_header_report','block_dukreminder'));
 		
 		$placeholder = '<a href="#" onclick="insertTextAtCursor(\'###coursename###\');return false;">Kursname</a> ';
 		$placeholder .= '<a href="#" onclick="insertTextAtCursor(\'###users###\');return false;">Liste der benachrichtigten User</a> ';
@@ -162,9 +165,11 @@ class reminder_form extends moodleform {
 				'context'=>null,
 				'noclean'=>0)); // Add elements to your form
 		$mform->addRule('text_teacher', null, 'required', null, 'client');
+		$mform->addHelpButton('text_teacher', 'form_text_teacher', 'block_dukreminder');
 		
 		// TO_REPORTTRAINER
 		$mform->addElement('checkbox', 'to_reporttrainer', get_string('form_to_reporttrainer', 'block_dukreminder'));
+		$mform->addHelpButton('to_reporttrainer', 'form_to_reporttrainer', 'block_dukreminder');
 		
 		// TO_REPORTSUPERIOR
 		$mform->addElement('checkbox', 'to_reportsuperior', get_string('form_to_reportsuperior', 'block_dukreminder'));
@@ -172,6 +177,7 @@ class reminder_form extends moodleform {
 		// TO_MAIL
 		$mform->addElement('text', 'to_mail', get_string('form_to_mail','block_dukreminder'));
 		$mform->setType('to_mail',PARAM_RAW);
+		$mform->addHelpButton('to_mail', 'form_to_mail', 'block_dukreminder');
 		
 		// only display buttons if form is enabled
 		if($this->_customdata['disable'] == 0)

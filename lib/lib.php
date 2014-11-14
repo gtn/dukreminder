@@ -191,8 +191,7 @@ function block_dukreminder_filter_users($entry) {
 			}
 		}
 	}
-	
-	//filter users by groups
+	//filter users by groups: REVERSED, send to users that are not in the groups
 	$group_ids = explode(';',$entry->to_groups);
 	if($entry->to_groups) {
 		foreach($users as $user) {
@@ -207,7 +206,6 @@ function block_dukreminder_filter_users($entry) {
 			}
 		}
 	}
-	
 	/*
 	//filter users by groups
 	$group_ids = explode(';',$entry->to_groups);
@@ -223,8 +221,8 @@ function block_dukreminder_filter_users($entry) {
 				unset($users[$user->id]);
 			}
 		}
-	}*/
-
+	}
+	*/
 	/*filter users by completion status (if not daterelativ_completion is set)
 	if($entry->to_status != COMPLETION_STATUS_ALL && $entry->daterelative_completion == 0) {
 		foreach ($users as $user) {
