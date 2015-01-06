@@ -30,3 +30,5 @@ $plugin->version   = 2014102800;        // The current plugin version (Date: YYY
 $plugin->requires  = 2012112900;        // Requires this Moodle version
 $plugin->component = 'block_dukreminder'; // Full name of the plugin (used for diagnostics)
 $plugin->cron = 86400;					// 60 * 60 * 24 = 86400 sec = 1 day
+$plugin->release = 'v1.0'; 			// This is our first release for Moodle 2.7.x branch.
+$plugin->maturity = MATURITY_STABLE;
