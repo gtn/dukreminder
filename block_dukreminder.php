@@ -22,162 +22,171 @@
  * @author	   Florian Jungwirth <fjungwirth@gtn-solutions.com>
  * @ideaandconcept Gerhard Schwed <gerhard.schwed@donau-uni.ac.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+*/
 
 defined('MOODLE_INTERNAL') || die();
 
 class block_dukreminder extends block_list {
 
-	function init() {
-		$this->title = get_string('pluginname', 'block_dukreminder');
-	}
+    function init() {
+        $this->title = get_string('pluginname', 'block_dukreminder');
+    }
 
-	function get_content() {
-		global $CFG, $OUTPUT, $COURSE;
+    function get_content() {
+        global $CFG, $OUTPUT, $COURSE;
 
-		if(!has_capability('block/dukreminder:use', context_course::instance($COURSE->id)))
-			return '';
-		
-		if ($this->content !== null) {
-			return $this->content;
-		}
+        if(!has_capability('block/dukreminder:use', context_course::instance($COURSE->id)))
+            return '';
 
-		if (empty($this->instance)) {
-			$this->content = '';
-			return $this->content;
-		}
+        if ($this->content !== null) {
+            return $this->content;
+        }
 
-		$this->content = new stdClass();
-		$this->content->items = array();
-		$this->content->icons = array();
-		$this->content->footer = '';
+        if (empty($this->instance)) {
+            $this->content = '';
+            return $this->content;
+        }
 
-		$this->content->items[] = html_writer::link(new moodle_url('/blocks/dukreminder/course_reminders.php', array('courseid'=>$COURSE->id)), get_string('tab_course_reminders', 'block_dukreminder'), array('title'=>get_string('tab_course_reminders', 'block_dukreminder')));
-		$this->content->icons[] = html_writer::empty_tag('img', array('src'=>new moodle_url('/blocks/dukreminder/pix/reminders.png'), 'alt'=>"", 'height'=>16, 'width'=>23));
+        $this->content = new stdClass();
+        $this->content->items = array();
+        $this->content->icons = array();
+        $this->content->footer = '';
 
-		$this->content->items[] = html_writer::link(new moodle_url('/blocks/dukreminder/new_reminder.php', array('courseid'=>$COURSE->id)), get_string('tab_new_reminder', 'block_dukreminder'), array('title'=>get_string('tab_new_reminder', 'block_dukreminder')));
-		$this->content->icons[] = html_writer::empty_tag('img', array('src'=>new moodle_url('/blocks/dukreminder/pix/new.png'), 'alt'=>"", 'height'=>16, 'width'=>23));
+        $this->content->items[] = html_writer::link(new moodle_url('/blocks/dukreminder/course_reminders.php', array('courseid'=>$COURSE->id)), get_string('tab_course_reminders', 'block_dukreminder'), array('title'=>get_string('tab_course_reminders', 'block_dukreminder')));
+        $this->content->icons[] = html_writer::empty_tag('img', array('src'=>new moodle_url('/blocks/dukreminder/pix/reminders.png'), 'alt'=>"", 'height'=>16, 'width'=>23));
 
-		return $this->content;
-	}
+        $this->content->items[] = html_writer::link(new moodle_url('/blocks/dukreminder/new_reminder.php', array('courseid'=>$COURSE->id)), get_string('tab_new_reminder', 'block_dukreminder'), array('title'=>get_string('tab_new_reminder', 'block_dukreminder')));
+        $this->content->icons[] = html_writer::empty_tag('img', array('src'=>new moodle_url('/blocks/dukreminder/pix/new.png'), 'alt'=>"", 'height'=>16, 'width'=>23));
+
+        return $this->content;
+    }
 
 
-	public function instance_allow_multiple() {
-		return true;
-	}
+    public function instance_allow_multiple() {
+        return true;
+    }
 
-	public function cron() {
-		require_once dirname(__FILE__)."/inc.php";
+    public function cron() {
+        require_once dirname(__FILE__)."/inc.php";
 
-		global $DB, $OUTPUT, $PAGE, $USER;
+        global $DB, $OUTPUT, $PAGE, $USER;
 
-		$entries = block_dukreminder_get_pending_reminders();
-		
-		foreach($entries as $entry) {
-			//$mailssent = $entry->mailssent;
-			$mailssent = 0;
-			$creator = $DB->get_record('user', array('id' => $entry->createdby));
-			$course = $DB->get_record('course', array('id' => $entry->courseid));
-			$coursecontext = context_course::instance($course->id);
+        $entries = block_dukreminder_get_pending_reminders();
 
-			$users = block_dukreminder_filter_users($entry);
-			$managers = array();
+        foreach($entries as $entry) {
+            //$mailssent = $entry->mailssent;
+            $mailssent = 0;
+            $creator = $DB->get_record('user', array('id' => $entry->createdby));
+            $course = $DB->get_record('course', array('id' => $entry->courseid));
+            $coursecontext = context_course::instance($course->id);
 
-			//go through users and send mails AND save the user managers
-			foreach($users as $user) {
-				$user->mailformat = FORMAT_HTML;
+            $users = block_dukreminder_filter_users($entry);
+            $managers = array();
 
-				$mailText = block_dukreminder_replace_placeholders($entry->text, $course->fullname, fullname($user), $user->email);
-				email_to_user($user, $creator, $entry->subject, strip_tags($mailText), $mailText);
-				$mailssent++;
-				
-				if($entry->daterelative > 0)
-					$DB->insert_record('block_dukreminder_mailssent', array('userid' => $user->id, 'reminderid' => $entry->id));
-				
-				$event = \block_dukreminder\event\send_mail::create(array(
-						'objectid' => $creator->id,
-						'context' => $coursecontext,
-						'other' => 'student was notified',
-						'relateduserid' => $user->id
-				));
-				$event->trigger();
-				mtrace("a reminder mail was sent to student $user->id for $entry->subject");
+            //go through users and send mails AND save the user managers
+            foreach($users as $user) {
+                $user->mailformat = FORMAT_HTML;
 
-				//check for user manager and save information for later notifications
-				if($entry->to_reportsuperior) {
-					$usermanager = block_dukreminder_get_manager($user);
-					if($usermanager) {
-						if(!isset($managers[$usermanager->id]))
-							$managers[$usermanager->id]->$usermanager;
+                $mailText = block_dukreminder_replace_placeholders($entry->text, $course->fullname, fullname($user), $user->email);
+                email_to_user($user, $creator, $entry->subject, strip_tags($mailText), $mailText);
+                $mailssent++;
 
-						$managers[$usermanager->id]->users[] = $user;
-					}
-				}
-			}
+                if($entry->daterelative > 0)
+                    $DB->insert_record('block_dukreminder_mailssent', array('userid' => $user->id, 'reminderid' => $entry->id));
 
-			$mailText = block_dukreminder_get_mail_text($course->fullname, $users, $entry->text_teacher);
+                $event = \block_dukreminder\event\send_mail::create(array(
+                        'objectid' => $creator->id,
+                        'context' => $coursecontext,
+                        'other' => 'student was notified',
+                        'relateduserid' => $user->id
+                ));
+                $event->trigger();
+                mtrace("a reminder mail was sent to student $user->id for $entry->subject");
 
-			if($entry->to_reporttrainer && $mailssent > 0) {
-				//get course teachers and send mails, and additional mails
-				$teachers = block_dukreminder_get_course_teachers($coursecontext);
-				foreach($teachers as $teacher) {
-					email_to_user($teacher, $creator, $entry->subject, $mailText); // changed by G. Schwed (DUK)
-					
-					$event = \block_dukreminder\event\send_mail::create(array(
-							'objectid' => $creator->id,
-							'context' => $coursecontext,
-							'other' => 'teacher was notified',
-							'relateduserid' => $teacher->id
-					));
-					$event->trigger();
-					mtrace("a report mail was sent to teacher $teacher->id");
-				}
-			}
-			// "Sonstige Empfänger"
-			if($entry->to_mail && $mailssent > 0) {
-				$addresses = explode(';',$entry->to_mail);
-				$dummyuser = $DB->get_record('user',array('id' => EMAIL_DUMMY));
+                //check for user manager and save information for later notifications
+                if($entry->to_reportsuperior) {
+                    $usermanager = block_dukreminder_get_manager($user);
+                    if($usermanager) {
+                        if(!isset($managers[$usermanager->id]))
+                            $managers[$usermanager->id]->$usermanager;
 
-				foreach($addresses as $address) {
-					$dummyuser->email = $address;
-					email_to_user($teacher, $creator, $entry->subject, $mailText); // changed by G. Schwed (DUK)
-					
-					$event = \block_dukreminder\event\send_mail::create(array(
-							'objectid' => $creator->id,
-							'context' => $coursecontext,
-							'other' => 'additional user was notified',
-							'relateduserid' => $dummyuser->id
-					));
-					$event->trigger();
-					mtrace("a report mail was sent to $address");
-				}
-			}
+                        $managers[$usermanager->id]->users[] = $user;
+                    }
+                }
+            }
 
-			// Managers
-			if($entry->to_reportsuperior && $mailssent > 0) {
-				foreach($managers as $manager) {
-					$mailText = block_dukreminder_get_mail_text($course->fullname, $manager->users);
-					email_to_user($manager, $creator, get_string('pluginname','block_dukreminder'), $mailText);
+            $mailText = block_dukreminder_get_mail_text($course->fullname, $users, $entry->text_teacher);
 
-					
-					$event = \block_dukreminder\event\send_mail::create(array(
-							'objectid' => $creator->id,
-							'context' => $coursecontext,
-							'other' => 'manager was notified',
-							'relateduserid' => $manager->id
-					));
-					$event->trigger();
-					mtrace("a report mail was sent to manager $manager->id");
-				}
-			}
-			//set sentmails
-			$entry->mailssent += $mailssent;
-			//set sent
-			$entry->sent = 1;
+            if($entry->to_reporttrainer && $mailssent > 0) {
+                //get course teachers and send mails, and additional mails
+                $teachers = block_dukreminder_get_course_teachers($coursecontext);
+                foreach($teachers as $teacher) {
+                    email_to_user($teacher, $creator, $entry->subject, $mailText); // changed by G. Schwed (DUK)
+                    	
+                    $event = \block_dukreminder\event\send_mail::create(array(
+                            'objectid' => $creator->id,
+                            'context' => $coursecontext,
+                            'other' => 'teacher was notified',
+                            'relateduserid' => $teacher->id
+                    ));
+                    $event->trigger();
+                    mtrace("a report mail was sent to teacher $teacher->id");
+                }
+            }
+            // "Sonstige Empfänger"
+            if($entry->to_mail && $mailssent > 0) {
+                $addresses = explode(';',$entry->to_mail);
+                $dummyuser = $DB->get_record('user',array('id' => EMAIL_DUMMY));
 
-			$DB->update_record('block_dukreminder', $entry);
+                foreach($addresses as $address) {
+                    $dummyuser->email = $address;
+                    email_to_user($teacher, $creator, $entry->subject, $mailText); // changed by G. Schwed (DUK)
+                    	
+                    $event = \block_dukreminder\event\send_mail::create(array(
+                            'objectid' => $creator->id,
+                            'context' => $coursecontext,
+                            'other' => 'additional user was notified',
+                            'relateduserid' => $dummyuser->id
+                    ));
+                    $event->trigger();
+                    mtrace("a report mail was sent to $address");
+                }
+            }
 
-		}
-		return true;
-	}
+            // Managers
+            if($entry->to_reportsuperior && $mailssent > 0) {
+                foreach($managers as $manager) {
+                    $mailText = block_dukreminder_get_mail_text($course->fullname, $manager->users);
+                    email_to_user($manager, $creator, get_string('pluginname','block_dukreminder'), $mailText);
+
+                    	
+                    $event = \block_dukreminder\event\send_mail::create(array(
+                            'objectid' => $creator->id,
+                            'context' => $coursecontext,
+                            'other' => 'manager was notified',
+                            'relateduserid' => $manager->id
+                    ));
+                    $event->trigger();
+                    mtrace("a report mail was sent to manager $manager->id");
+                }
+            }
+            //set sentmails
+            $entry->mailssent += $mailssent;
+            //set sent
+            $entry->sent = 1;
+
+            $DB->update_record('block_dukreminder', $entry);
+
+        }
+        return true;
+    }
+    /**
+     * Delete everything related to this instance if you have been using persistent storage other than the configdata field.
+     * @return boolean
+     */
+    public function instance_delete() {
+        global $DB, $COURSE;
+        
+        return $DB->delete_records('block_dukreminder', array('courseid' => $COURSE->id));
+    }
 }
