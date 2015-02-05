@@ -19,7 +19,7 @@
  *
  * @package    block_dukreminder
  * @copyright  gtn gmbh <office@gtn-solutions.com>
- * @author	   Florian Jungwirth <fjungwirth@gtn-solutions.com>
+ * @author       Florian Jungwirth <fjungwirth@gtn-solutions.com>
  * @ideaandconcept Gerhard Schwed <gerhard.schwed@donau-uni.ac.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,37 +28,37 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-		'block/dukreminder:myaddinstance' => array(
-				'captype' => 'write',
-				'contextlevel' => CONTEXT_SYSTEM,
-				'archetypes' => array(
-						'user' => CAP_ALLOW
-				),
+        'block/dukreminder:myaddinstance' => array(
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                        'user' => CAP_ALLOW
+                ),
 
-				'clonepermissionsfrom' => 'moodle/my:manageblocks'
-		),
+                'clonepermissionsfrom' => 'moodle/my:manageblocks'
+        ),
 
-		'block/dukreminder:addinstance' => array(
-				'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'block/dukreminder:addinstance' => array(
+                'riskbitmask' => RISK_SPAM | RISK_XSS,
 
-				'captype' => 'write',
-				'contextlevel' => CONTEXT_BLOCK,
-				'archetypes' => array(
-						'editingteacher' => CAP_ALLOW,
-						'manager' => CAP_ALLOW
-				),
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_BLOCK,
+                'archetypes' => array(
+                        'editingteacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                ),
 
-				'clonepermissionsfrom' => 'moodle/site:manageblocks'
-		),
+                'clonepermissionsfrom' => 'moodle/site:manageblocks'
+        ),
 
-		'block/dukreminder:use' => array(
-				'captype' => 'write',
-				'contextlevel' => CONTEXT_COURSE,
-				'legacy' => array(
-						'coursecreator' => CAP_ALLOW,
-						'editingteacher' => CAP_ALLOW,
-						'teacher' => CAP_ALLOW,
-						'manager' => CAP_ALLOW
-				)
-		),
+        'block/dukreminder:use' => array(
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_COURSE,
+                'legacy' => array(
+                        'coursecreator' => CAP_ALLOW,
+                        'editingteacher' => CAP_ALLOW,
+                        'teacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                )
+        ),
 );

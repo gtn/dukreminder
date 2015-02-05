@@ -19,7 +19,7 @@
  *
  * @package    block_dukreminder
  * @copyright  gtn gmbh <office@gtn-solutions.com>
- * @author	   Florian Jungwirth <fjungwirth@gtn-solutions.com>
+ * @author       Florian Jungwirth <fjungwirth@gtn-solutions.com>
  * @ideaandconcept Gerhard Schwed <gerhard.schwed@donau-uni.ac.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,6 +29,6 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2014102800;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012112900;        // Requires this Moodle version
 $plugin->component = 'block_dukreminder'; // Full name of the plugin (used for diagnostics)
-$plugin->cron = 86400;					// 60 * 60 * 24 = 86400 sec = 1 day
-$plugin->release = 'v1.0'; 			// This is our first release for Moodle 2.7.x branch.
+$plugin->cron = 86400;                    // 60 * 60 * 24 = 86400 sec = 1 day
+$plugin->release = 'v1.0';             // This is our first release for Moodle 2.7.x branch.
 $plugin->maturity = MATURITY_STABLE;
