@@ -77,7 +77,7 @@ class reminder_form extends moodleform {
         $placeholder = '###username### ###usermail### ###coursename###';
 
         $mform->addElement('html', html_writer::div(
-                html_writer::div(html_writer::tag('label', 'Platzhalter'), 'fitemtitle').
+                html_writer::div(html_writer::tag('label', get_string('form_placeholder','block_dukreminder')), 'fitemtitle').
                 html_writer::div($placeholder, 'felement ftext'), 'fitem'));
 
         // TEXT.
@@ -174,7 +174,7 @@ class reminder_form extends moodleform {
         $placeholder = '###coursename### ###users### ###usercount###';
 
         $mform->addElement('html', html_writer::div(
-                html_writer::div(html_writer::tag('label', 'Platzhalter'), 'fitemtitle').
+                html_writer::div(html_writer::tag('label', get_string('placeholder','block_exacomp')), 'fitemtitle').
                 html_writer::div($placeholder, 'felement ftext'), 'fitem'));
 
         // TEXT.

@@ -55,6 +55,7 @@ $string['form_mailssent'] = 'Bisher versandte Erinnerungen';
 $string['form_delete'] = 'Wirklich löschen?';
 $string['form_criteria'] = 'Benachrichtigungskriterium';
 $string['form_criteria_help'] = 'Es stehen verschiedene Kriterien zur Verfügung. Bei Unklarheiten sind in der Block-Dokumentation ausführliche Informationen vorhanden und Anwendungsfälle beschrieben.';
+$string['form_placeholder'] = 'Platzhalter';
 
 $string['form_header_general'] = 'Allgemeines';
 $string['form_header_time'] = 'Zeit';
