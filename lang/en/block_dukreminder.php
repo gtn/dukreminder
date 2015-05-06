@@ -32,7 +32,7 @@ $string['pluginname'] = 'Course Completion Reminder';
 $string['tab_course_reminders'] = 'Course reminders';
 $string['tab_new_reminder'] = 'New reminder';
 
-$string['form_title'] = 'internal description';
+$string['form_title'] = 'Internal description';
 $string['form_subject'] = 'Email subject';
 $string['form_subject_help'] = 'Subject of the reminder email';
 $string['form_text'] = 'Emailtext for the student';
@@ -55,7 +55,7 @@ $string['form_mailssent'] = 'Already sent reminders';
 $string['form_delete'] = 'Are you sure?';
 $string['form_criteria'] = 'Reminder criteria';
 $string['form_criteria_help'] = 'Different reminder criteria are available. For additional descriptions please look up the Block documentation';
-$string['form_placeholder'] = 'placeholder';
+$string['form_placeholder'] = 'Placeholder';
 
 $string['form_header_general'] = 'General';
 $string['form_header_time'] = 'Time';
