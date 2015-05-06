@@ -90,16 +90,11 @@ foreach ($data as $record) {
     $record->actions =
         html_writer::link(
             new moodle_url('/blocks/dukreminder/new_reminder.php', array('courseid' => $COURSE->id, 'reminderid' => $record->id)),
-            html_writer::empty_tag('img',
-                array('src' => new moodle_url('/blocks/dukreminder/pix/new.png'),
-                'alt' => "",
-                'height' => 16,
-                'width' => 23)))
-        .html_writer::link(
+            $OUTPUT->pix_icon("t/editstring", "edit"))
+        .' '.html_writer::link(
             new moodle_url('/blocks/dukreminder/course_reminders.php',
                 array('courseid' => $COURSE->id, 'sorting' => $sorting, 'delete' => $record->id)),
-            html_writer::empty_tag('img', array('src' => new moodle_url('/blocks/dukreminder/pix/del.png'),
-                'alt' => "", 'height' => 16, 'width' => 16)),
+            $OUTPUT->pix_icon("t/delete", "delete"),
             array("onclick" => "return confirm('".get_string('form_delete', 'block_dukreminder')."')"));
 
     // Don't display id, it is only used for the delete link.

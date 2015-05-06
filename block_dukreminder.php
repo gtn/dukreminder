@@ -70,17 +70,13 @@ class block_dukreminder extends block_list {
                                             array('courseid' => $COURSE->id)),
                                             get_string('tab_course_reminders', 'block_dukreminder'),
                                             array('title' => get_string('tab_course_reminders', 'block_dukreminder')));
-        $this->content->icons[] = html_writer::empty_tag('img',
-                                            array('src' => new moodle_url('/blocks/dukreminder/pix/reminders.png'),
-                                            'alt' => "", 'height' => 16, 'width' => 23));
+        $this->content->icons[] = $OUTPUT->pix_icon("t/copy", "edit");
 
         $this->content->items[] = html_writer::link(new moodle_url('/blocks/dukreminder/new_reminder.php',
                                             array('courseid' => $COURSE->id)),
                                             get_string('tab_new_reminder', 'block_dukreminder'),
                                             array('title' => get_string('tab_new_reminder', 'block_dukreminder')));
-        $this->content->icons[] = html_writer::empty_tag('img',
-                                            array('src' => new moodle_url('/blocks/dukreminder/pix/new.png'),
-                                            'alt' => "", 'height' => 16, 'width' => 23));
+        $this->content->icons[] = $OUTPUT->pix_icon("t/editstring", "edit");
 
         return $this->content;
     }
