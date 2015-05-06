@@ -185,7 +185,6 @@ class reminder_form extends moodleform {
                 'changeformat' => 0,
                 'context' => null,
                 'noclean' => 0)); // Add elements to your form.
-        $mform->addRule('text_teacher', null, 'required', null, 'client');
         $mform->addHelpButton('text_teacher', 'form_text_teacher', 'block_dukreminder');
 
         // TO_REPORTTRAINER.
