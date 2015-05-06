@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'block_dukreminder', language 'de'
+ * Strings for component 'block_dukreminder', language 'e'
  *
  * @package    block_dukreminder
  * @copyright  gtn gmbh <office@gtn-solutions.com>
@@ -24,56 +24,56 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['blockstring'] = 'Kursabschlusserinnerung';
-$string['newblock:addinstance'] = 'Add a newblock block';
-$string['newblock:myaddinstance'] = 'Add a newblock block to my moodle';
-$string['pluginname'] = 'Kursabschlusserinnerung';
+$string['blockstring'] = 'Course Completion Reminder';
+$string['newblock:addinstance'] = 'Add a block';
+$string['newblock:myaddinstance'] = 'Add a block to my moodle';
+$string['pluginname'] = 'Course Completion Reminder';
 
-$string['tab_course_reminders'] = 'Kurs-Erinnerungen';
-$string['tab_new_reminder'] = 'Neue Erinnerung';
+$string['tab_course_reminders'] = 'Course reminders';
+$string['tab_new_reminder'] = 'New reminder';
 
-$string['form_title'] = 'interne Bezeichnung';
-$string['form_subject'] = 'Email Betreff';
-$string['form_subject_help'] = 'Betreff der Benachrichtungs-Email';
-$string['form_text'] = 'Emailtext Teilnehmer';
-$string['form_text_help'] = 'Hier wird der Text für den Bericht an die KursteilnehmerInnen erfasst. Folgende Platzhalter stehen zur Auswahl: ###username### wird in der E-Mail mit dem Namen des Teilnehmers ersetzt, ###usermail### mit dessen Mail und ###coursename### mit dem aktuellen Kurs.';
-$string['form_text_teacher'] = 'Emailtext Trainer';
-$string['form_text_teacher_help'] = 'Hier wird der Text für den Bericht an die KurstrainerInnen erfasst. Folgende Platzhalter stehen zur Auswahl: ###coursename### wird in der E-Mail mit dem Kursnamen ersetzt. ###users### wird durch eine Liste der benachrichtigten Kursteilnehmer ersetzt, und ###usercount### durch die Anzahl der benachrichtigten Teilnehmer';
-$string['form_dateabsolute'] = 'absolutes Versanddatum';
-$string['form_dateabsolute_help'] = 'Das absolute Versanddatum legt eine Deadline fest, an der die Erinnerungen versendet werden';
-$string['form_daterelative'] = 'relative Versandzeit';
-$string['form_daterelative_help'] = 'Die relative Versandzeit gibt an in welchem relativem Abstand zum gewählten Kriterium die Erinnerung versendet werden soll';
-$string['form_daterelative_completion'] = 'Versand [Zeit] nach letztem Kursabschluss';
-$string['form_to_status'] = 'Kursabschlusstatus';
-$string['form_to_reporttrainer'] = 'Bericht an die Kurstrainer';
-$string['form_to_reporttrainer_help'] = 'Diese Option bestimmt, ob der Bericht an die TrainerInnen im Kurs gesendet werden soll';
+$string['form_title'] = 'internal description';
+$string['form_subject'] = 'Email subject';
+$string['form_subject_help'] = 'Subject of the reminder email';
+$string['form_text'] = 'Emailtext for the student';
+$string['form_text_help'] = 'Here you can define the text that the studens will recieve. The following placeholders can be used: ###username### will be replaced with the student, ###usermail### with his mail and ###coursename### with the current course name.';
+$string['form_text_teacher'] = 'Emailtext for the Trainer';
+$string['form_text_teacher_help'] = 'Here you can define the text that the course trainers will recieve.. The following placeholders can be used: ###coursename### for the current course name. ###users### is the list of reminded users, and ###usercount### is the amount of reminded students';
+$string['form_dateabsolute'] = 'Deadline';
+$string['form_dateabsolute_help'] = 'The reminders will be sent on the deadline';
+$string['form_daterelative'] = 'Time';
+$string['form_daterelative_help'] = 'The time defines after which amount of time the reminder will be sent after fullfiling the chosen criteria';
+$string['form_daterelative_completion'] = 'Send reminder after course completion';
+$string['form_to_status'] = 'Course completion state';
+$string['form_to_reporttrainer'] = 'Report to course trainers';
+$string['form_to_reporttrainer_help'] = 'If ticked, a report will be sent to the course trainers';
 $string['form_to_reportsuperior'] = 'Bericht an die Vorgesetzte';
-$string['form_to_groups'] = 'Empfängergruppen';
-$string['form_to_mail'] = 'Bericht an sonstige Email Empfänger';
-$string['form_to_mail_help'] = 'Hier können mit ; getrennte E-Mail-Adressen als sonstige Empfänger für den Trainer-Bericht definiert werden';
-$string['form_mailssent'] = 'Bisher versandte Erinnerungen';
-$string['form_delete'] = 'Wirklich löschen?';
-$string['form_criteria'] = 'Benachrichtigungskriterium';
-$string['form_criteria_help'] = 'Es stehen verschiedene Kriterien zur Verfügung. Bei Unklarheiten sind in der Block-Dokumentation ausführliche Informationen vorhanden und Anwendungsfälle beschrieben.';
+$string['form_to_groups'] = 'Recievers';
+$string['form_to_mail'] = 'Report to additional users';
+$string['form_to_mail_help'] = 'Here you can add additional users that will recieve the report. Insert their email addresses, seperated with a ;';
+$string['form_mailssent'] = 'Already sent reminders';
+$string['form_delete'] = 'Are you sure?';
+$string['form_criteria'] = 'Reminder criteria';
+$string['form_criteria_help'] = 'Different reminder criteria are available. For additional descriptions please look up the Block documentation';
 $string['form_placeholder'] = 'placeholder';
 
-$string['form_header_general'] = 'Allgemeines';
-$string['form_header_time'] = 'Zeit';
-$string['form_header_criteria'] = 'Kriterium';
-$string['form_header_groups'] = 'Gruppenfilter';
-$string['form_header_report'] = 'Berichtsoptionen';
+$string['form_header_general'] = 'General';
+$string['form_header_time'] = 'Time';
+$string['form_header_criteria'] = 'Criteria';
+$string['form_header_groups'] = 'Group filtering';
+$string['form_header_report'] = 'Settings';
 
-$string['form_to_status_all'] = 'Alle';
-$string['form_to_status_completed'] = 'Mit Abschluss';
-$string['form_to_status_notcompleted'] = 'Ohne Abschluss';
+$string['form_to_status_all'] = 'All';
+$string['form_to_status_completed'] = 'With course completion';
+$string['form_to_status_notcompleted'] = 'Without course completion';
 
-$string['daterelative_error'] = 'Es ist kein negativer Wert hier erlaubt';
-$string['criteria_error'] = 'Eine Kombination aus absolutem Datum und dem Kriterium Kurseinschreibung kann nicht verwendet werden';
-$string['criteria_error2'] = 'Eine Kombination aus relativer Zeitspanne und dem Kriterium Alle kann nicht verwendet werden';
-$string['to_mail_error'] = 'Es ist eine ungültige E-Mail-Adresse angegeben worden! Die Adressen müssen mit ; getrennt werden';
+$string['daterelative_error'] = 'Negative values are permitted!';
+$string['criteria_error'] = 'Deadline and the subscription criteria can not be combined.';
+$string['criteria_error2'] = 'Deadline and the all criteria can not be combined';
+$string['to_mail_error'] = 'Invalid email! The mail addresses must be seperated by ;';
 
-$string['email_teacher_notification'] = 'Soeben wurden folgende {$a->amount} Personen im Kurs {$a->course} erinnert:';
+$string['email_teacher_notification'] = '{$a->amount} students in the course {$a->course} have just been reminded:';
 
-$string['criteria_all'] = 'Alle';
-$string['criteria_completion'] = 'Kursabschluss';
-$string['criteria_enrolment'] = 'Kurseinschreibung';
+$string['criteria_all'] = 'All';
+$string['criteria_completion'] = 'Course completion';
+$string['criteria_enrolment'] = 'Course subscription';
