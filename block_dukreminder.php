@@ -167,7 +167,7 @@ class block_dukreminder extends block_list {
             // Sonstige Empfänger.
             if ($entry->to_mail && $mailssent > 0) {
                 $addresses = explode(';', $entry->to_mail);
-                $dummyuser = $DB->get_record('user', array('id' => EMAIL_DUMMY));
+                $dummyuser = $DB->get_record('user', array('id' => BLOCK_DUKREMINDER_EMAIL_DUMMY));
 
                 foreach ($addresses as $address) {
                     $dummyuser->email = $address;

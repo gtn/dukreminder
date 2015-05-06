@@ -131,9 +131,9 @@ class reminder_form extends moodleform {
         $completion = new completion_info($course);
 
         $criteria = array();
-        $criteria[CRITERIA_ALL] = get_string('criteria_all', 'block_dukreminder');
-        $criteria[CRITERIA_COMPLETION] = get_string('criteria_completion', 'block_dukreminder');
-        $criteria[CRITERIA_ENROLMENT] = get_string('criteria_enrolment', 'block_dukreminder');
+        $criteria[BLOCK_DUKREMINDER_CRITERIA_ALL] = get_string('criteria_all', 'block_dukreminder');
+        $criteria[BLOCK_DUKREMINDER_CRITERIA_COMPLETION] = get_string('criteria_completion', 'block_dukreminder');
+        $criteria[BLOCK_DUKREMINDER_CRITERIA_ENROLMENT] = get_string('criteria_enrolment', 'block_dukreminder');
 
         if ($completion->has_criteria()) {
 
@@ -239,11 +239,11 @@ class reminder_form extends moodleform {
             }
         }
 
-        if ($data['daterelative'] == 0 && $data['criteria'] == CRITERIA_ENROLMENT) {
+        if ($data['daterelative'] == 0 && $data['criteria'] == BLOCK_DUKREMINDER_CRITERIA_ENROLMENT) {
             $errors['criteria'] = get_string('criteria_error', 'block_dukreminder');
         };
 
-        if ($data['daterelative'] > 0 && $data['criteria'] == CRITERIA_ALL) {
+        if ($data['daterelative'] > 0 && $data['criteria'] == BLOCK_DUKREMINDER_CRITERIA_ALL) {
             $errors['criteria'] = get_string('criteria_error2', 'block_dukreminder');
         }
 
