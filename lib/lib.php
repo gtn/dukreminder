@@ -348,13 +348,13 @@ function block_dukreminder_get_criteria($entry) {
     global $DB;
 
     if ($entry == BLOCK_DUKREMINDER_CRITERIA_COMPLETION) {
-        return get_string('BLOCK_DUKREMINDER_CRITERIA_COMPLETION', 'block_dukreminder');
+        return get_string('criteria_completion', 'block_dukreminder');
     };
     if ($entry == BLOCK_DUKREMINDER_CRITERIA_ENROLMENT) {
-        return get_string('BLOCK_DUKREMINDER_CRITERIA_ENROLMENT', 'block_dukreminder');
+        return get_string('criteria_enrolment', 'block_dukreminder');
     };
     if ($entry == BLOCK_DUKREMINDER_CRITERIA_ALL) {
-        return get_string('BLOCK_DUKREMINDER_CRITERIA_ALL', 'block_dukreminder');
+        return get_string('criteria_all', 'block_dukreminder');
     }
 
     $completioncriteriaentry = $DB->get_record('course_completion_criteria', array('id' => $entry));
