@@ -73,6 +73,10 @@ $mform = new reminder_form($PAGE->url,
 if ($mform->is_cancelled()) {
     // Handle form cancel operation, if cancel button is present on form.
     $df = 1;
+    
+    // Go back to course
+    $url = new moodle_url('/course/view.php', array('id' => $PAGE->course->id));
+    redirect($url);
 } else if ($fromform = $mform->get_data()) {
     // In this case you process validated data. $mform->get_data() returns data posted in form.
     if ($fromform->id == 0) {
